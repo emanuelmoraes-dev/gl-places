@@ -22,6 +22,6 @@ To be able to compile the source code, follow the instructions below
 ### Configuring Environment
 Rename the files "env/debug/env.example.hh" and "env/release/env.example.hh" to "env/debug/env.hh" and "env/release/env.hh" (respectively) with the environments configurations
 
-#### env/debug/env.hh and env/release/env.example.hh
+#### env/debug/env.hh and env/release/env.hh
 * PL_ENV_SHADERS_DIR: Relative path (from the binary folder) that has the shading source
 * PL_ENV_TEXTURES_DIR: Relative path (from the binary folder) that has the textures
