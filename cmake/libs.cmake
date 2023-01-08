@@ -1,0 +1,5 @@
+include(cmake/libs/opengl.cmake)
+include(cmake/libs/stb.cmake)
+include(cmake/libs/glm.cmake)
+include(cmake/libs/glfw.cmake)
+include(cmake/libs/glew.cmake)

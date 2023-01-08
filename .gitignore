@@ -1,3 +1,16 @@
+# Extern Libs
+/lib/glfw.zip
+/lib/glfw/
+
+/lib/glew.zip
+/lib/glew/
+
+# Environment
+/env/**/env.hh
+
+# CMAKE Build
+/build/
+
 # Prerequisites
 *.d
 
