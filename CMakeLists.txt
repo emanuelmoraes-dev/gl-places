@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 PROJECT(gl_places CXX)
 
+include(opts.cmake)
+
 add_executable(GLPlaces)
 
 target_sources(

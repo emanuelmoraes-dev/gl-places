@@ -8,6 +8,9 @@
 # Environment
 /env/**/env.hh
 
+# CMAKE options config
+/opts.cmake
+
 # CMAKE Build
 /build/
 

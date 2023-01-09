@@ -19,8 +19,11 @@ To be able to compile the source code, follow the instructions below
   * Note: For Windows environments the "glew32.dll" must to be in the binary folder OR in the %PATH% variable
   * Note: If you use Windows, you can download [here](https://github.com/emanuelmoraes-dev/gl-places/releases/download/v0.0.0-windows_x86_amd64/glew.zip)
 
+### configuring options
+Copy the file "opts.example.cmake" to "opts.cmake" with the options configurations
+
 ### Configuring Environment
-Rename the files "env/debug/env.example.hh" and "env/release/env.example.hh" to "env/debug/env.hh" and "env/release/env.hh" (respectively) with the environments configurations
+Copy the files "env/debug/env.example.hh" and "env/release/env.example.hh" to "env/debug/env.hh" and "env/release/env.hh" (respectively) with the environments configurations
 
 #### env/debug/env.hh and env/release/env.hh
 * PL_ENV_SHADERS_DIR: Relative path (from the binary folder) that has the shading source
