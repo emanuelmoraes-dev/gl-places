@@ -2,8 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "errors.hh"
-#include "info.hh"
+#include "util/errors.hh"
+#include "util/gl_info.hh"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)

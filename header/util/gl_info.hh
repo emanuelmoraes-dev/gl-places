@@ -1,5 +1,5 @@
-#ifndef _GL_PLACES_INFO_HH_INCLUDED_
-#define _GL_PLACES_INFO_HH_INCLUDED_
+#ifndef _GL_PLACES_GL_INFO_HH_INCLUDED_
+#define _GL_PLACES_GL_INFO_HH_INCLUDED_
 
 int coutGlVersion();
 int coutGlslVersion();

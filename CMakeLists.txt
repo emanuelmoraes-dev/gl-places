@@ -9,14 +9,14 @@ target_sources(
     GLPlaces
     PRIVATE
         src/main.cc
-        src/fs.cc
-        src/info.cc
+        src/util/gl_info.cc
+        src/util/fs.cc
 )
 
 target_include_directories(
     GLPlaces
     PRIVATE
-        src/headers
+        header
 )
 
 target_compile_features(
