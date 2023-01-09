@@ -9,8 +9,12 @@ target_sources(
     GLPlaces
     PRIVATE
         src/main.cc
+        src/app.cc
+        src/world.cc
         src/util/gl_info.cc
         src/util/fs.cc
+        src/object/shaders.cc
+        src/scene/museum.cc
 )
 
 target_include_directories(

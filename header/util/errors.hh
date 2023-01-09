@@ -50,4 +50,10 @@
 #define PL_ERR_LOAD_TEXTURE (__PL_ERRBASE + 13)
 #define PL_ERR_LOAD_TEXTURE_MESSAGE "Error loading texture"
 
+#define PL_ERR_LOAD_SCENE (__PL_ERRBASE + 14)
+#define PL_ERR_LOAD_SCENE_MESSAGE "Error loading museum"
+
+#define PL_ERR_DRAW_SCENE (__PL_ERRBASE + 15)
+#define PL_ERR_DRAW_SCENE_MESSAGE "Error drawing museum"
+
 #endif

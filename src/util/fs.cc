@@ -13,11 +13,18 @@ int readFile(std::string const& path, std::string& content) {
     }
 }
 
-std::string dir(std::string const& path) {
+void dir(std::string const& path, std::string& content) {
     const size_t pos = path.find_last_of(PL_SLASH);
-    return path.substr(0, pos);
+    content = path.substr(0, pos);
 }
 
-std::string join(std::string const& path1, std::string const& path2) {
-    return path1 + PL_SLASH + path2;
+void join(std::string const& path1, std::string const& path2, std::string& content) {
+    content = path1 + PL_SLASH + path2;
+}
+
+void getBinaryPath(int argc, const char* argv[], std::string& content) {
+    if (argc < 1) {
+        content = ".";
+    }
+    dir(argv[0], content);
 }

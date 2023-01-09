@@ -1,9 +1,18 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <string>
 
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+
+#include "app.hh"
+#include "world.hh"
 #include "util/errors.hh"
+#include "util/fs.hh"
 #include "util/gl_info.hh"
+
+#include "scene/museum.hh"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -11,6 +20,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 int main(int argc, const char* argv[]) {
+    const App app(argc, argv);
+
     int err = 0;
 
     err = glfwInit();
@@ -43,12 +54,26 @@ int main(int argc, const char* argv[]) {
         return err;
     }
 
-    while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
+    World world;
 
+    Museum museum;
+    err = museumLoad(museum, app);
+    if (err != 0) {
+        CERR_MSG(PL_ERR_LOAD_SCENE, err, "Museum Scene Error");
+        return err;
+    }
+
+    while (!glfwWindowShouldClose(window)) {
         glClearColor(0.7f, 0.9f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        err = museumDraw(museum, world);
+        if (err != 0) {
+            CERR_MSG(PL_ERR_DRAW_SCENE, err, "Museum Scene Error");
+            return err;
+        }
+
+        glfwPollEvents();
         glfwSwapBuffers(window);
     }
 
