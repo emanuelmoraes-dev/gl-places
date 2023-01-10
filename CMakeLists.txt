@@ -10,10 +10,11 @@ target_sources(
     PRIVATE
         src/main.cc
         src/app.cc
-        src/world.cc
         src/util/gl_info.cc
         src/util/fs.cc
         src/object/shaders.cc
+        src/object/vao.cc
+        src/object/rect.cc
         src/scene/museum.cc
 )
 

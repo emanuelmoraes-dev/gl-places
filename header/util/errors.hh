@@ -56,4 +56,13 @@
 #define PL_ERR_DRAW_SCENE (__PL_ERRBASE + 15)
 #define PL_ERR_DRAW_SCENE_MESSAGE "Error drawing museum"
 
+#define PL_ERR_NUMBER_MUST_BE_POSITIVE (__PL_ERRBASE + 16)
+#define PL_ERR_NUMBER_MUST_BE_POSITIVE_MESSAGE "The number must be positive"
+
+#define PL_ERR_LOAD_OBJECT (__PL_ERRBASE + 17)
+#define PL_ERR_LOAD_OBJECT_MESSAGE "Error loading object"
+
+#define PL_ERR_DRAW_OBJECT (__PL_ERRBASE + 18)
+#define PL_ERR_DRAW_OBJECT_MESSAGE "Error drawing object"
+
 #endif

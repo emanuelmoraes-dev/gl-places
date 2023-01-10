@@ -1,5 +1,8 @@
 #version 330 core
 
-void main() {
+uniform vec4 COLOR;
+out vec4 outColor;
 
+void main() {
+    outColor = COLOR;
 }

@@ -3,8 +3,7 @@
 
 #include <string>
 
-class App {
-public:
+struct App {
     std::string binaryPath;
 
     App(int argc, const char* argv[]);
