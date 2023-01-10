@@ -7,14 +7,15 @@
 #include <glm/ext.hpp>
 
 #include "app.hh"
-#include "util/errors.hh"
+#include "errors.hh"
+
 #include "util/fs.hh"
 #include "util/gl_info.hh"
 
 #include "scene/museum.hh"
 
 #define PL_WINDOW_WIDTH 800
-#define PL_WINDOW_HEIGHT 800
+#define PL_WINDOW_HEIGHT 600
 
 const glm::mat4 I = glm::identity<glm::mat4>();
 

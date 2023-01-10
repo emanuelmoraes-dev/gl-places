@@ -1,6 +1,6 @@
 #include "object/shaders.hh"
+#include "errors.hh"
 #include "util/fs.hh"
-#include "util/errors.hh"
 
 #include <string>
 

@@ -1,5 +1,5 @@
 #include "util/gl_info.hh"
-#include "util/errors.hh"
+#include "errors.hh"
 
 #include <GL/glew.h>
 

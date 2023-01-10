@@ -1,5 +1,5 @@
 #include "object/rect.hh"
-#include "util/errors.hh"
+#include "errors.hh"
 
 int loadRect(Vao& vao, float aspect) {
     int err = 0;

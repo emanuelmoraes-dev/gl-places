@@ -1,10 +1,11 @@
 #include "scene/museum.hh"
 
+#include "errors.hh"
+
 #include "object/shaders.hh"
 #include "object/rect.hh"
 
 #include "util/fs.hh"
-#include "util/errors.hh"
 
 #include <string>
 
