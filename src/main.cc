@@ -6,18 +6,23 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-#include "app.hh"
 #include "errors.hh"
+#include "env.hh"
+#include "app.hh"
 
 #include "util/fs.hh"
 #include "util/gl_info.hh"
 
+#include "object/walk_camera.hh"
 #include "scene/museum.hh"
 
-#define PL_WINDOW_WIDTH 800
-#define PL_WINDOW_HEIGHT 600
-
 const glm::mat4 I = glm::identity<glm::mat4>();
+
+WalkCamera camera(
+    glm::vec3{ 0.0f, 0.0f,  3.0f },
+    glm::vec3{ 0.0f, 0.0f, -1.0f },
+    glm::vec3{ 0.0f, 1.0f,  0.0f },
+    glm::vec3{ 0.0f, 1.0f,  0.0f });
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -25,6 +30,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 void resized(GLFWwindow* window, int width, int height) {
+    camera._aspect = (float) width / height;
     glViewport(0, 0, (GLsizei) width, (GLsizei) height);
 }
 
@@ -43,7 +49,7 @@ int main(int argc, const char* argv[]) {
     // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(PL_WINDOW_WIDTH, PL_WINDOW_HEIGHT, "GL Places", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(PL_ENV_WINDOW_WIDTH, PL_ENV_WINDOW_HEIGHT, PL_ENV_WINDOW_TITLE, nullptr, nullptr);
     if (window == nullptr) {
         CERR(PL_ERR_WINDOW, err);
         return PL_ERR_WINDOW;
@@ -64,9 +70,9 @@ int main(int argc, const char* argv[]) {
         return err;
     }
 
-    resized(window, PL_WINDOW_WIDTH, PL_WINDOW_HEIGHT);
+    resized(window, PL_ENV_WINDOW_WIDTH, PL_ENV_WINDOW_HEIGHT);
 
-    const glm::mat4 world = I;
+    World world(I);
 
     Museum museum;
     err = loadMuseum(museum, app);
@@ -78,6 +84,9 @@ int main(int argc, const char* argv[]) {
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.7f, 0.9f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        world.view = camera.buildView();
+        world.projection = camera.buildProjection();
 
         err = drawMuseum(museum, world);
         if (err != 0) {

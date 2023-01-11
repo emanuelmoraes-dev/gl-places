@@ -46,13 +46,13 @@ int loadWalls(MuseumWalls& walls, App const& app) {
         return err;
     }
 
-    err = loadRect(walls.vao, 1.0f);
+    err = loadRect(walls.vao, 1.5f);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading rect");
         return err;
     }
 
-    walls.model = glm::scale(walls.model, glm::vec3{ 0.5f, 0.5f, 0.0f });
+    // walls.model = glm::scale(walls.model, glm::vec3{ 0.5f, 0.5f, 0.0f });
 
     return 0;
 }
@@ -68,10 +68,11 @@ int loadMuseum(Museum& museum, App const& app) {
     return 0;
 }
 
-int drawWalls(MuseumWalls const& walls, glm::mat4 const& world) {
+int drawWalls(MuseumWalls const& walls, World const& world) {
     glUseProgram(walls.programId);
 
-    const glm::mat4 mvp = walls.model * world;
+    const glm::mat4 model = world.model * walls.model;
+    const glm::mat4 mvp = world.projection * world.view * model;
     const GLint MVP = glGetUniformLocation(walls.programId, "MVP");
     glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(mvp));
 
@@ -90,7 +91,7 @@ int drawWalls(MuseumWalls const& walls, glm::mat4 const& world) {
     return 0;
 }
 
-int drawMuseum(Museum const& museum, glm::mat4 const& world) {
+int drawMuseum(Museum const& museum, World const& world) {
     int err = drawWalls(museum.walls, world);
 
     if (err != 0) {

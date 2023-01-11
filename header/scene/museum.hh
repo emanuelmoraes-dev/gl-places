@@ -1,8 +1,9 @@
 #ifndef _PL_MUSEUM_HH_INCLUDED_
 #define _PL_MUSEUM_HH_INCLUDED_
 
-#include "object/vao.hh"
 #include "app.hh"
+#include "world.hh"
+#include "object/vao.hh"
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -22,6 +23,6 @@ struct Museum {
 };
 
 int loadMuseum(Museum& museum, App const& app);
-int drawMuseum(Museum const& museum, glm::mat4 const& world);
+int drawMuseum(Museum const& museum, World const& world);
 
 #endif
