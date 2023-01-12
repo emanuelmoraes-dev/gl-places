@@ -4,12 +4,14 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-struct World {
-    glm::mat4 model;
-    glm::mat4 view;
-    glm::mat4 projection;
+namespace pl {
+    struct World {
+        glm::mat4 model;
+        glm::mat4 view;
+        glm::mat4 projection;
 
-    World(glm::mat4 model);
-};
+        World(glm::mat4 model);
+    };
+}
 
 #endif

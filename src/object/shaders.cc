@@ -4,6 +4,9 @@
 
 #include <string>
 
+using namespace opl;
+using namespace upl;
+
 int checkShader(GLuint shaderId) {
     GLint infoLogLength = 0;
     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
@@ -76,7 +79,7 @@ void freeProgram(GLuint const* programId, GLuint const* vertShaderId, GLuint con
     glDeleteProgram(*programId);
 }
 
-int loadShaders(GLuint* const programId, std::string const& vertShaderFile, std::string const& fragShaderFile) {
+int opl::loadShaders(GLuint* const programId, std::string const& vertShaderFile, std::string const& fragShaderFile) {
     int err = 0;
 
     std::cout << "loading " << vertShaderFile << std::endl;

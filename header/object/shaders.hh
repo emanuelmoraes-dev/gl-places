@@ -11,6 +11,8 @@
 #define PL_SHADER_VERT_ECHO PL_ENV_SHADERS_DIR PL_SLASH "echo_vert.glsl"
 #define PL_SHADER_FRAG_ECHO PL_ENV_SHADERS_DIR PL_SLASH "echo_frag.glsl"
 
-int loadShaders(GLuint* programId, std::string const& vertShaderFile, std::string const& fragShaderFile);
+namespace opl {
+    int loadShaders(GLuint* programId, std::string const& vertShaderFile, std::string const& fragShaderFile);
+}
 
 #endif

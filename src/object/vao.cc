@@ -1,6 +1,8 @@
 #include "object/vao.hh"
 
-void loadVBO(GLuint* vbo, GLsizeiptr size, const void* vertexBuffer) {
+using namespace opl;
+
+void opl::loadVBO(GLuint* vbo, GLsizeiptr size, const void* vertexBuffer) {
     glGenBuffers(1, vbo);
 
     glBindBuffer(GL_ARRAY_BUFFER, *vbo);
@@ -9,7 +11,7 @@ void loadVBO(GLuint* vbo, GLsizeiptr size, const void* vertexBuffer) {
     glBindBuffer(*vbo, 0);
 }
 
-void loadEBO(GLuint* ebo, GLsizeiptr size, const void* elementBuffer) {
+void opl::loadEBO(GLuint* ebo, GLsizeiptr size, const void* elementBuffer) {
     glGenBuffers(1, ebo);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ebo);
@@ -18,20 +20,20 @@ void loadEBO(GLuint* ebo, GLsizeiptr size, const void* elementBuffer) {
     glBindBuffer(*ebo, 0);
 }
 
-Vao::~Vao() {
+opl::Vao::~Vao() {
     if (this->id != 0) {
         glDeleteVertexArrays(1, &(this->id));
         this->id = 0;
     }
 }
 
-Vao::Vao() :
+opl::Vao::Vao() :
     id(0),
     vn(0),
     in(0)
     {}
 
-void loadVAO(Vao& vao, GLsizei vn, const Vertex* vertexes, GLsizei in, const GLuint* elements) {
+void opl::loadVAO(Vao& vao, GLsizei vn, const Vertex* vertexes, GLsizei in, const GLuint* elements) {
     vao.vn = vn;
     vao.in = in;
 

@@ -3,6 +3,8 @@
 
 #include "object/vao.hh"
 
-int loadRect(Vao& vao, float aspect);
+namespace opl {
+    int loadRect(Vao& vao, float aspect);
+}
 
 #endif

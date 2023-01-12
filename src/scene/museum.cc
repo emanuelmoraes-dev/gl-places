@@ -11,14 +11,19 @@
 
 #include <GL/glew.h>
 
+using namespace pl;
+using namespace opl;
+using namespace spl;
+using namespace upl;
+
 const glm::mat4 I = glm::identity<glm::mat4>();
 
-MuseumWalls::MuseumWalls() :
+spl::MuseumWalls::MuseumWalls() :
     programId(0),
     textureId(0),
     model(I) {}
 
-MuseumWalls::~MuseumWalls() {
+spl::MuseumWalls::~MuseumWalls() {
     glUseProgram(0);
     if (this->programId != 0) {
         glDeleteProgram(this->programId);
@@ -57,7 +62,7 @@ int loadWalls(MuseumWalls& walls, App const& app) {
     return 0;
 }
 
-int loadMuseum(Museum& museum, App const& app) {
+int spl::loadMuseum(Museum& museum, App const& app) {
     int err = loadWalls(museum.walls, app);
 
     if (err != 0) {
@@ -91,7 +96,7 @@ int drawWalls(MuseumWalls const& walls, World const& world) {
     return 0;
 }
 
-int drawMuseum(Museum const& museum, World const& world) {
+int spl::drawMuseum(Museum const& museum, World const& world) {
     int err = drawWalls(museum.walls, world);
 
     if (err != 0) {

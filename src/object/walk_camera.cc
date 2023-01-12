@@ -2,10 +2,11 @@
 #include "config.hh"
 #include "env.hh"
 
+using namespace opl;
+
 const glm::mat4 I = glm::identity<glm::mat4>();
 
-WalkCamera::WalkCamera(glm::vec3 eye, glm::vec3 direction, glm::vec3 up,
-glm::vec3 surfaceNormal) :
+opl::WalkCamera::WalkCamera(glm::vec3 eye, glm::vec3 direction, glm::vec3 up, glm::vec3 surfaceNormal) :
     _eye(eye),
     _direction(glm::normalize(direction)),
     _up(glm::normalize(up)),
@@ -19,15 +20,15 @@ glm::vec3 surfaceNormal) :
     _speed(PL_WALK_CAMERA_SPEED),
     _sensitivity(PL_WALK_CAMERA_SENSITIVITY) {}
 
-glm::mat4 WalkCamera::buildView() const {
+glm::mat4 opl::WalkCamera::buildView() const {
     return glm::lookAt(_eye, _eye + _direction, _up);
 }
 
-glm::mat4 WalkCamera::buildProjection() const {
+glm::mat4 opl::WalkCamera::buildProjection() const {
     return glm::perspective(_fov, _aspect, _near, _far);
 }
 
-void WalkCamera::moveFoward(float amount) {
+void opl::WalkCamera::moveFoward(float amount) {
     // axes
     const glm::vec3 direction = glm::normalize(_direction);
     const glm::vec3 up = glm::normalize(_up);
@@ -38,17 +39,17 @@ void WalkCamera::moveFoward(float amount) {
     _eye += surfaceDirection * amount * _speed;
 }
 
-void WalkCamera::moveRight(float amount) {
+void opl::WalkCamera::moveRight(float amount) {
     const glm::vec3 right = glm::normalize(glm::cross(_direction, _up));
     _eye += right * amount * _speed * (-1.0f);
 }
 
-void WalkCamera::moveUp(float amount) {
+void opl::WalkCamera::moveUp(float amount) {
     const glm::vec3 surfaceNormal = glm::normalize(_surfaceNormal);
     _eye += surfaceNormal * amount * _speed * (-1.0f);
 }
 
-void WalkCamera::look(float yaw, float pitch) {
+void opl::WalkCamera::look(float yaw, float pitch) {
     // axes
     const glm::vec3 direction = glm::normalize(_direction);
     const glm::vec3 up = glm::normalize(_up);

@@ -4,22 +4,24 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-void loadVBO(GLuint* vbo, GLsizeiptr size, const void* vertexBuffer);
-void loadEBO(GLuint* ebo, GLsizeiptr size, const void* elementBuffer);
+namespace opl {
+    void loadVBO(GLuint* vbo, GLsizeiptr size, const void* vertexBuffer);
+    void loadEBO(GLuint* ebo, GLsizeiptr size, const void* elementBuffer);
 
-struct Vertex {
-    glm::vec3 position;
-};
+    struct Vertex {
+        glm::vec3 position;
+    };
 
-struct Vao {
-    GLuint id;
-    GLsizei vn;
-    GLsizei in;
+    struct Vao {
+        GLuint id;
+        GLsizei vn;
+        GLsizei in;
 
-    Vao();
-    ~Vao();
-};
+        Vao();
+        ~Vao();
+    };
 
-void loadVAO(Vao& vao, GLsizei vn, const Vertex* vertexes, GLsizei in, const GLuint* elements);
+    void loadVAO(Vao& vao, GLsizei vn, const Vertex* vertexes, GLsizei in, const GLuint* elements);
+}
 
 #endif

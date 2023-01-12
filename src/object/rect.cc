@@ -1,7 +1,9 @@
 #include "object/rect.hh"
 #include "errors.hh"
 
-int loadRect(Vao& vao, float aspect) {
+using namespace opl;
+
+int opl::loadRect(Vao& vao, float aspect) {
     int err = 0;
     if (aspect < 0.0f) {
         CERR_MSG(PL_ERR_NUMBER_MUST_BE_POSITIVE, PL_ERR_NUMBER_MUST_BE_POSITIVE, "aspect in loadRect() must be positive");

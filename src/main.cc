@@ -16,6 +16,11 @@
 #include "object/walk_camera.hh"
 #include "scene/museum.hh"
 
+using namespace pl;
+using namespace opl;
+using namespace spl;
+using namespace upl;
+
 const glm::mat4 I = glm::identity<glm::mat4>();
 
 WalkCamera camera(

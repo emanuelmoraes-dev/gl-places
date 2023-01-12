@@ -8,21 +8,23 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-struct MuseumWalls {
-    GLuint programId;
-    GLuint textureId;
-    Vao vao;
-    glm::mat4 model;
+namespace spl {
+    struct MuseumWalls {
+        GLuint programId;
+        GLuint textureId;
+        opl::Vao vao;
+        glm::mat4 model;
 
-    MuseumWalls();
-    ~MuseumWalls();
-};
+        MuseumWalls();
+        ~MuseumWalls();
+    };
 
-struct Museum {
-    MuseumWalls walls;
-};
+    struct Museum {
+        MuseumWalls walls;
+    };
 
-int loadMuseum(Museum& museum, App const& app);
-int drawMuseum(Museum const& museum, World const& world);
+    int loadMuseum(Museum& museum, pl::App const& app);
+    int drawMuseum(Museum const& museum, pl::World const& world);
+}
 
 #endif

@@ -3,9 +3,11 @@
 
 #include <string>
 
-int readFile(std::string const& path, std::string& content);
-void dir(std::string const& file, std::string& content);
-void join(std::string const& path1, std::string const& path2, std::string& content);
-void getBinaryPath(int argc, const char* argv[], std::string& content);
+namespace upl {
+    int readFile(std::string const& path, std::string& content);
+    void dir(std::string const& file, std::string& content);
+    void join(std::string const& path1, std::string const& path2, std::string& content);
+    void getBinaryPath(int argc, const char* argv[], std::string& content);
+}
 
 #endif

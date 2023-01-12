@@ -3,10 +3,12 @@
 
 #include <string>
 
-struct App {
-    std::string binaryPath;
+namespace pl {
+    struct App {
+        std::string binaryPath;
 
-    App(int argc, const char* argv[]);
-};
+        App(int argc, const char* argv[]);
+    };
+}
 
 #endif

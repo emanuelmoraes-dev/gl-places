@@ -4,9 +4,11 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-struct DirectionalLight {
-    glm::vec3 direction;
-    float intensity;
-};
+namespace opl {
+    struct DirectionalLight {
+        glm::vec3 direction;
+        float intensity;
+    };
+}
 
 #endif

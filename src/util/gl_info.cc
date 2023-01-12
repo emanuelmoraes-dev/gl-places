@@ -3,7 +3,9 @@
 
 #include <GL/glew.h>
 
-int coutGlVersion() {
+using namespace upl;
+
+int upl::coutGlVersion() {
     GLint glMajorVersion = -1;
     GLint glMinorVersion = -1;
     glGetIntegerv(GL_MAJOR_VERSION, &glMajorVersion);
@@ -26,7 +28,7 @@ int coutGlVersion() {
     return 0;
 }
 
-int coutGlslVersion() {
+int upl::coutGlslVersion() {
     const GLubyte* glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
     if (glslVersion == nullptr) {
@@ -39,7 +41,7 @@ int coutGlslVersion() {
     return 0;
 }
 
-int coutGlVendor() {
+int upl::coutGlVendor() {
     const GLubyte* glVendor = glGetString(GL_VENDOR);
 
     if (glVendor == nullptr) {
@@ -52,7 +54,7 @@ int coutGlVendor() {
     return 0;
 }
 
-int coutGlRenderer() {
+int upl::coutGlRenderer() {
     const GLubyte* glRenderer = glGetString(GL_RENDERER);
 
     if (glRenderer == nullptr) {
@@ -65,7 +67,7 @@ int coutGlRenderer() {
     return 0;
 }
 
-int coutAllInfo() {
+int upl::coutAllInfo() {
     int err = 0;
 
     err = coutGlVersion();
