@@ -27,7 +27,7 @@ int opl::loadRect(Vao& vao, float aspect) {
     const Vertex vertexes[] = { Vertex{a}, Vertex{b}, Vertex{c}, Vertex{d} };
     const GLuint elements[] = {
         0, 1, 2,
-        1, 2, 3
+        2, 1, 3
     };
 
     loadVAO(vao, 4, vertexes, 6, elements);

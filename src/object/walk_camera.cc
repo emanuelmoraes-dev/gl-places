@@ -34,19 +34,19 @@ void opl::WalkCamera::moveFoward(float amount) {
     const glm::vec3 up = glm::normalize(_up);
     const glm::vec3 right = glm::normalize(glm::cross(direction, up));
     const glm::vec3 surfaceNormal = glm::normalize(_surfaceNormal);
-    const glm::vec3 surfaceDirection = glm::normalize(glm::cross(right, surfaceNormal));
+    const glm::vec3 surfaceDirection = glm::normalize(glm::cross(surfaceNormal, right));
 
     _eye += surfaceDirection * amount * _speed;
 }
 
 void opl::WalkCamera::moveRight(float amount) {
     const glm::vec3 right = glm::normalize(glm::cross(_direction, _up));
-    _eye += right * amount * _speed * (-1.0f);
+    _eye += right * amount * _speed;
 }
 
 void opl::WalkCamera::moveUp(float amount) {
     const glm::vec3 surfaceNormal = glm::normalize(_surfaceNormal);
-    _eye += surfaceNormal * amount * _speed * (-1.0f);
+    _eye += surfaceNormal * amount * _speed;
 }
 
 void opl::WalkCamera::look(float yaw, float pitch) {
@@ -57,7 +57,7 @@ void opl::WalkCamera::look(float yaw, float pitch) {
     const glm::vec3 surfaceNormal = glm::normalize(_surfaceNormal);
 
     // rotate matrixes
-    const glm::mat4 yawRotate = glm::rotate(I, glm::radians(yaw * _sensitivity), surfaceNormal);
+    const glm::mat4 yawRotate = glm::rotate(I, glm::radians(yaw * _sensitivity), up);
     const glm::mat4 pitchRotate = glm::rotate(I, glm::radians(pitch * _sensitivity), right);
 
     // update

@@ -12,6 +12,7 @@
 
 #include "util/fs.hh"
 #include "util/gl_info.hh"
+#include "util/delta.hh"
 
 #include "object/walk_camera.hh"
 #include "scene/museum.hh"
@@ -29,9 +30,34 @@ WalkCamera camera(
     glm::vec3{ 0.0f, 1.0f,  0.0f },
     glm::vec3{ 0.0f, 1.0f,  0.0f });
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
+DeltaF dtime;
+DeltaF dyaw;
+DeltaF dpitch;
+bool changingDirection = false;
+
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int modifiers) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        double x;
+        double y;
+        glfwGetCursorPos(window, &x, &y);
+        dyaw.tick((float) x);
+        dpitch.tick((float) y);
+        changingDirection = true;
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    } else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+        dyaw.reset();
+        dpitch.reset();
+        changingDirection = false;
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+}
+
+void cursorPosCallback(GLFWwindow* window, double x, double y) {
+    if (changingDirection) {
+        dyaw.tick((float) x);
+        dpitch.tick((float) y);
+        camera.look(-1 * dyaw.delta(), -1 * dpitch.delta());
+    }
 }
 
 void resized(GLFWwindow* window, int width, int height) {
@@ -61,7 +87,8 @@ int main(int argc, const char* argv[]) {
     }
 
     glfwMakeContextCurrent(window);
-    glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
+    glfwSetCursorPosCallback(window, cursorPosCallback);
     glfwSetFramebufferSizeCallback(window, resized);
 
     err = glewInit();
@@ -86,9 +113,19 @@ int main(int argc, const char* argv[]) {
         return err;
     }
 
+    dtime.tick((float) glfwGetTime());
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
     while (!glfwWindowShouldClose(window)) {
+        dtime.tick((float) glfwGetTime());
+
         glClearColor(0.7f, 0.9f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         world.view = camera.buildView();
         world.projection = camera.buildProjection();
@@ -101,6 +138,25 @@ int main(int argc, const char* argv[]) {
 
         glfwPollEvents();
         glfwSwapBuffers(window);
+
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, GL_TRUE);
+        else {
+            if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+                camera.moveFoward(dtime.delta());
+            else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+                camera.moveFoward(-1 * dtime.delta());
+
+            if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+                camera.moveRight(-1 * dtime.delta());
+            else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+                camera.moveRight(dtime.delta());
+
+            if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+                camera.moveUp(dtime.delta());
+            else if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+                camera.moveUp(-1 * dtime.delta());
+        }
     }
 
     glfwTerminate();

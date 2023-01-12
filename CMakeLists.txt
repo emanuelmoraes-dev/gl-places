@@ -13,6 +13,7 @@ target_sources(
         src/world.cc
         src/util/gl_info.cc
         src/util/fs.cc
+        src/util/delta.cc
         src/object/shaders.cc
         src/object/vao.cc
         src/object/rect.cc
