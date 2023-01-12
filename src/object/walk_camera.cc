@@ -53,9 +53,10 @@ void WalkCamera::look(float yaw, float pitch) {
     const glm::vec3 direction = glm::normalize(_direction);
     const glm::vec3 up = glm::normalize(_up);
     const glm::vec3 right = glm::normalize(glm::cross(direction, up));
+    const glm::vec3 surfaceNormal = glm::normalize(_surfaceNormal);
 
     // rotate matrixes
-    const glm::mat4 yawRotate = glm::rotate(I, glm::radians(yaw * _sensitivity), up);
+    const glm::mat4 yawRotate = glm::rotate(I, glm::radians(yaw * _sensitivity), surfaceNormal);
     const glm::mat4 pitchRotate = glm::rotate(I, glm::radians(pitch * _sensitivity), right);
 
     // update
