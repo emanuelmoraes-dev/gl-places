@@ -9,7 +9,6 @@ namespace opl {
     public:
         glm::vec3 _eye;
         glm::vec3 _direction;
-        glm::vec3 _up;
         glm::vec3 _surfaceNormal;
 
         float _fov;
@@ -20,7 +19,7 @@ namespace opl {
         float _speed;
         float _sensitivity;
 
-        WalkCamera(glm::vec3 eye, glm::vec3 direction, glm::vec3 up, glm::vec3 surfaceNormal);
+        WalkCamera(glm::vec3 eye, glm::vec3 direction, glm::vec3 surfaceNormal);
 
         glm::mat4 buildView() const;
         glm::mat4 buildProjection() const;

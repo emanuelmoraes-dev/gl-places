@@ -27,7 +27,6 @@ const glm::mat4 I = glm::identity<glm::mat4>();
 WalkCamera camera(
     glm::vec3{ 0.0f, 0.0f,  3.0f },
     glm::vec3{ 0.0f, 0.0f, -1.0f },
-    glm::vec3{ 0.0f, 1.0f,  0.0f },
     glm::vec3{ 0.0f, 1.0f,  0.0f });
 
 DeltaF dtime;
