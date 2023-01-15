@@ -7,6 +7,8 @@
 #include <glm/ext.hpp>
 
 namespace opl {
+    int loadSquare(std::array<glm::vec3, 4>& positions);
+    int loadSquare(std::array<GLuint, 6>& elements);
     int loadSquare(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6>& elements);
     int loadSquareBorder(std::array<GLuint, 8>& elements);
 }

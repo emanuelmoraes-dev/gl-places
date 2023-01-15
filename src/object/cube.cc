@@ -11,10 +11,10 @@ using namespace std;
 
 const glm::mat4 I = glm::identity<glm::mat4>();
 
-int opl::loadCubeSideZ(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6>& elements, float translate) {
+int opl::loadCubeSideZ(std::array<glm::vec3, 4>& positions, float translate) {
     int err = 0;
 
-    err = loadSquare(positions, elements);
+    err = loadSquare(positions);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading rect");
         return err;
@@ -40,10 +40,10 @@ int opl::loadCubeSideZ(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6
     return 0;
 }
 
-int opl::loadCubeSideX(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6>& elements, float translate) {
+int opl::loadCubeSideX(std::array<glm::vec3, 4>& positions, float translate) {
     int err = 0;
 
-    err = loadSquare(positions, elements);
+    err = loadSquare(positions);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading rect");
         return err;
@@ -69,10 +69,10 @@ int opl::loadCubeSideX(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6
     return 0;
 }
 
-int opl::loadCubeSideY(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6>& elements, float translate) {
+int opl::loadCubeSideY(std::array<glm::vec3, 4>& positions, float translate) {
     int err = 0;
 
-    err = loadSquare(positions, elements);
+    err = loadSquare(positions);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading rect");
         return err;
@@ -98,43 +98,60 @@ int opl::loadCubeSideY(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6
     return 0;
 }
 
-int opl::loadCube(std::array<std::array<glm::vec3, 4>, 6>& positions, std::array<std::array<GLuint, 6>, 6>& elements) {
+int opl::loadCube(Cube& cube) {
     int err = 0;
     constexpr float translate = 1;
 
-    err = loadCubeSideZ(positions[0], elements[0], -translate);
+    err = loadCubeSideZ(cube.back, -translate);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading back rect");
         return err;
     }
 
-    err = loadCubeSideX(positions[1], elements[1], translate);
+    err = loadCubeSideX(cube.right, translate);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading right rect");
         return err;
     }
 
-    err = loadCubeSideZ(positions[2], elements[2], translate);
+    err = loadCubeSideZ(cube.front, translate);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading front rect");
         return err;
     }
 
-    err = loadCubeSideX(positions[3], elements[3], -translate);
+    err = loadCubeSideX(cube.left, -translate);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading left rect");
         return err;
     }
 
-    err = loadCubeSideY(positions[4], elements[4], translate);
+    err = loadCubeSideY(cube.top, translate);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading top rect");
         return err;
     }
 
-    err = loadCubeSideY(positions[5], elements[5], -translate);
+    err = loadCubeSideY(cube.botton, -translate);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading botton rect");
+        return err;
+    }
+
+    return 0;
+}
+
+int opl::loadCube(Cube& cube, std::array<GLuint, 6>& elements) {
+    int err = 0;
+
+    err = loadCube(cube);
+    if (err != 0) {
+        return err;
+    }
+
+    err = loadSquare(elements);
+    if (err != 0) {
+        CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading rect elements");
         return err;
     }
 

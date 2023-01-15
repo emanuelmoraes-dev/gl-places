@@ -45,6 +45,7 @@ namespace opl {
         ~Vao();
     };
 
+    void loadVAO(Vao& vao, GLsizei vn, GLuint vbo, GLsizei en, GLuint ebo);
     void loadVAO(Vao& vao, GLsizei vn, const Vertex* vertexes, GLsizei en, const GLuint* elements);
     void loadVAO(Vao& vao, VAOTarget const& target);
 }

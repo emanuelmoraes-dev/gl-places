@@ -14,6 +14,8 @@
 #include <algorithm>
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 using namespace pl;
 using namespace opl;
@@ -67,23 +69,24 @@ int loadWalls(MuseumWalls& walls, App const& app) {
     const glm::vec3 beige{ 0.73f, 0.58f, 0.41f };
     const glm::vec3 gray{ 0.5f, 0.5f, 0.5f };
 
-    array<array<glm::vec3, 4>, 6> boxPositions;
-    array<array<GLuint, 6>, 6> boxElements;
-    err = loadCube(boxPositions, boxElements);
+    // load cube
+    Cube cube;
+    array<GLuint, 6> cubeElements;
+    err = loadCube(cube, cubeElements);
     if (err != 0) {
-        CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading box");
+        CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading cube");
         return err;
     }
 
     // walls object
     VAOTarget target;
     GLsizei vertexOffset = 0;
-    OPL_ATTACH(target, boxPositions[0], boxElements[0], &vertexOffset, gray); // back
-    OPL_ATTACH(target, boxPositions[1], boxElements[1], &vertexOffset, gray); // right
-    OPL_ATTACH(target, boxPositions[2], boxElements[2], &vertexOffset, gray); // front
-    OPL_ATTACH(target, boxPositions[3], boxElements[3], &vertexOffset, gray); // left
-    OPL_ATTACH(target, boxPositions[4], boxElements[4], &vertexOffset, beige); // top
-    OPL_ATTACH(target, boxPositions[5], boxElements[5], &vertexOffset, whiteGray); // botton
+    OPL_ATTACH(target, cube.back, cubeElements, &vertexOffset, gray);
+    OPL_ATTACH(target, cube.right, cubeElements, &vertexOffset, gray);
+    OPL_ATTACH(target, cube.front, cubeElements, &vertexOffset, gray);
+    OPL_ATTACH(target, cube.left, cubeElements, &vertexOffset, gray);
+    OPL_ATTACH(target, cube.top, cubeElements, &vertexOffset, beige);
+    OPL_ATTACH(target, cube.botton, cubeElements, &vertexOffset, whiteGray);
     loadVAO(walls.object, target);
 
     // walls border
@@ -94,17 +97,17 @@ int loadWalls(MuseumWalls& walls, App const& app) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading square border");
         return err;
     }
-    OPL_ATTACH(target, boxPositions[0], borderElements, &vertexOffset, white); // back
-    OPL_ATTACH(target, boxPositions[1], borderElements, &vertexOffset, white); // right
-    OPL_ATTACH(target, boxPositions[2], borderElements, &vertexOffset, white); // front
-    OPL_ATTACH(target, boxPositions[3], borderElements, &vertexOffset, white); // left
-    OPL_ATTACH(target, boxPositions[4], borderElements, &vertexOffset, white); // top
-    OPL_ATTACH(target, boxPositions[5], borderElements, &vertexOffset, white); // botton
+    OPL_ATTACH(target, cube.back, borderElements, &vertexOffset, white);
+    OPL_ATTACH(target, cube.right, borderElements, &vertexOffset, white);
+    OPL_ATTACH(target, cube.front, borderElements, &vertexOffset, white);
+    OPL_ATTACH(target, cube.left, borderElements, &vertexOffset, white);
+    OPL_ATTACH(target, cube.top, borderElements, &vertexOffset, white);
+    OPL_ATTACH(target, cube.botton, borderElements, &vertexOffset, white);
     loadVAO(walls.border, target);
 
     const glm::vec3 scaleObject{ 9.0f, 4.0f, 16.0f };
-    const glm::vec3 scaleInsideBorder = scaleObject - 0.01f;
-    const glm::vec3 scaleOutsideBorder = scaleObject + 0.01f;
+    const glm::vec3 scaleInsideBorder = scaleObject + glm::vec3{ -0.01f };
+    const glm::vec3 scaleOutsideBorder = scaleObject + glm::vec3{ 0.01f };
 
     walls.objectModel = glm::scale(walls.objectModel, scaleObject);
     walls.insideBorderModel = glm::scale(walls.insideBorderModel, scaleInsideBorder);

@@ -63,15 +63,9 @@ opl::Vao::Vao() :
     en(0)
     {}
 
-void opl::loadVAO(Vao& vao, GLsizei vn, const Vertex* vertexes, GLsizei en, const GLuint* elements) {
+void opl::loadVAO(Vao& vao, GLsizei vn, GLuint vbo, GLsizei en, GLuint ebo) {
     vao.vn = vn;
     vao.en = en;
-
-    GLuint vbo = 0;
-    loadVBO(&vbo, sizeof(Vertex) * vn, vertexes);
-
-    GLuint ebo = 0;
-    loadEBO(&ebo, sizeof(GLsizei) * en, elements);
 
     glGenVertexArrays(1, &(vao.id));
     glBindVertexArray(vao.id);
@@ -87,6 +81,16 @@ void opl::loadVAO(Vao& vao, GLsizei vn, const Vertex* vertexes, GLsizei en, cons
         (const void*) offsetof(Vertex, color));
 
     glBindVertexArray(0);
+}
+
+void opl::loadVAO(Vao& vao, GLsizei vn, const Vertex* vertexes, GLsizei en, const GLuint* elements) {
+    GLuint vbo = 0;
+    loadVBO(&vbo, sizeof(Vertex) * vn, vertexes);
+
+    GLuint ebo = 0;
+    loadEBO(&ebo, sizeof(GLsizei) * en, elements);
+
+    loadVAO(vao, vn, vbo, en, ebo);
 }
 
 void opl::loadVAO(Vao& vao, VAOTarget const& target) {
