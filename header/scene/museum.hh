@@ -12,8 +12,13 @@ namespace spl {
     struct MuseumWalls {
         GLuint programId;
         GLuint textureId;
-        opl::Vao vao;
-        glm::mat4 model;
+
+        opl::Vao object;
+        glm::mat4 objectModel;
+
+        opl::Vao border;
+        glm::mat4 insideBorderModel;
+        glm::mat4 outsideBorderModel;
 
         MuseumWalls();
         ~MuseumWalls();

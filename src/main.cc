@@ -25,7 +25,7 @@ using namespace upl;
 const glm::mat4 I = glm::identity<glm::mat4>();
 
 WalkCamera camera(
-    glm::vec3{ 0.0f, 0.0f,  3.0f },
+    glm::vec3{ 0.0f, 0.0f,  0.0f },
     glm::vec3{ 0.0f, 0.0f, -1.0f },
     glm::vec3{ 0.0f, 1.0f,  0.0f });
 
@@ -114,8 +114,8 @@ int main(int argc, const char* argv[]) {
 
     dtime.tick((float) glfwGetTime());
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    // glEnable(GL_CULL_FACE);
+    // glCullFace(GL_BACK);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);

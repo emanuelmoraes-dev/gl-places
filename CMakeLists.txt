@@ -16,7 +16,8 @@ target_sources(
         src/util/delta.cc
         src/object/shaders.cc
         src/object/vao.cc
-        src/object/rect.cc
+        src/object/square.cc
+        src/object/cube.cc
         src/object/walk_camera.cc
         src/scene/museum.cc
 )
