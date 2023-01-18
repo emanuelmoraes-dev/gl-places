@@ -131,7 +131,7 @@ int main(int argc, const char* argv[]) {
     while (!glfwWindowShouldClose(window)) {
         dtime.tick((float) glfwGetTime());
 
-        glClearColor(0.7f, 0.9f, 0.1f, 1.0f);
+        glClearColor(0.73f, 0.58f, 0.41f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         world.view = camera.buildView();

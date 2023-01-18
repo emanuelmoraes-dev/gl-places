@@ -41,14 +41,6 @@ namespace opl {
         glm::vec3 color
     );
 
-    void attach(
-        VAOTarget& target,
-        GLsizei pn,
-        const glm::vec3* positions,
-        GLsizei en,
-        const GLuint* elements
-    );
-
     void attach(std::vector<GLuint>& targetElements, GLsizei* vertexOffset, GLsizei count, GLsizei pn, GLsizei en, const GLuint* elements);
 
     struct Vao {

@@ -64,7 +64,7 @@ int loadWallsObject(Vao& wallsObject, Cube& cube) {
     OPL_ATTACH(target, cube.left, cubeElements, gray);
     OPL_ATTACH(target, cube.right, cubeElements, gray);
     OPL_ATTACH(target, cube.botton, cubeElements, whiteGray);
-    OPL_ATTACH(target, cube.top, cubeElements, beige);
+    // OPL_ATTACH(target, cube.top, cubeElements, beige);
     loadVAO(wallsObject, target);
 
     return 0;
