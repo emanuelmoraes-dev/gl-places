@@ -7,6 +7,8 @@
 using namespace opl;
 using namespace upl;
 
+opl::Shaders::Shaders() : echo(0), line(0) {}
+
 int checkShader(GLuint shaderId) {
     GLint infoLogLength = 0;
     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
@@ -135,4 +137,26 @@ int opl::loadShaders(GLuint* const programId, std::string const& vertShaderFile,
     freeShaders(&vertShaderId, &fragShaderId, programId);
 
     return 0;
+}
+
+void opl::echo::shaderUniform(GLuint programId, glm::mat4 const& mvp) {
+    GLint MVP = glGetUniformLocation(programId, "MVP");
+    glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(mvp));
+}
+
+void opl::line::shaderUniform(GLuint programId, glm::mat4 const& mvp, int viewPortWidth, int viewPortHeight, glm::vec4 const& color, float lineWidth, float blendFactor) {
+    const GLint MVP = glGetUniformLocation(programId, "MVP");
+    glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(mvp));
+
+    const GLint VIEW_PORT = glGetUniformLocation(programId, "VIEW_PORT");
+    glUniform2iv(VIEW_PORT, 1, glm::value_ptr(glm::ivec2{ viewPortWidth, viewPortHeight }));
+
+    const GLint LINE_WIDTH = glGetUniformLocation(programId, "LINE_WIDTH");
+    glUniform1f(LINE_WIDTH, lineWidth);
+
+    const GLint COLOR = glGetUniformLocation(programId, "COLOR");
+    glUniform4fv(COLOR, 1, glm::value_ptr(color));
+
+    const GLint BLEND_FACTOR = glGetUniformLocation(programId, "BLEND_FACTOR");
+    glUniform1f(BLEND_FACTOR, blendFactor);
 }

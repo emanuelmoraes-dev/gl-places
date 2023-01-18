@@ -1,5 +1,5 @@
-#ifndef _PL_MUSEUM_HH_INCLUDED_
-#define _PL_MUSEUM_HH_INCLUDED_
+#ifndef _PL_SCENE_MUSEUM_HH_INCLUDED_
+#define _PL_SCENE_MUSEUM_HH_INCLUDED_
 
 #include "app.hh"
 #include "world.hh"
@@ -10,7 +10,6 @@
 
 namespace spl {
     struct MuseumWalls {
-        GLuint programId;
         GLuint textureId;
 
         opl::Vao object;
@@ -29,7 +28,7 @@ namespace spl {
     };
 
     int loadMuseum(Museum& museum, pl::App const& app);
-    int drawMuseum(Museum const& museum, pl::World const& world);
+    int drawMuseum(Museum const& museum, pl::App const& app, pl::World const& world);
 }
 
 #endif

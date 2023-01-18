@@ -65,4 +65,7 @@
 #define PL_ERR_DRAW_OBJECT (__PL_ERRBASE + 18)
 #define PL_ERR_DRAW_OBJECT_MESSAGE "Error drawing object"
 
+#define PL_ERR_LOAD_APP (__PL_ERRBASE + 18)
+#define PL_ERR_LOAD_APP_MESSAGE "Error loading App"
+
 #endif

@@ -1,5 +1,5 @@
-#ifndef _GL_PLACES_GL_INFO_HH_INCLUDED_
-#define _GL_PLACES_GL_INFO_HH_INCLUDED_
+#ifndef _PL_UTIL_GL_INFO_HH_INCLUDED_
+#define _PL_UTIL_GL_INFO_HH_INCLUDED_
 
 namespace upl {
     int coutGlVersion();

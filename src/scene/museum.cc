@@ -7,6 +7,7 @@
 #include "object/square.hh"
 
 #include "util/fs.hh"
+#include "util/border.hh"
 
 #include <string>
 #include <vector>
@@ -24,55 +25,33 @@ using namespace upl;
 using namespace std;
 
 const glm::mat4 I = glm::identity<glm::mat4>();
+const glm::vec3 red{ 1.0f, 0.0f, 0.0f };
+const glm::vec3 blue{ 0.0f, 0.0f, 1.0f };
+const glm::vec3 yellow{ 1.0f, 1.0f, 0.0f };
+const glm::vec3 ciano{ 0.0f, 1.0f, 1.0f };
+const glm::vec3 black{ 0.0f, 0.0f, 0.0f };
+const glm::vec3 white{ 1.0f, 1.0f, 1.0f };
+const glm::vec3 whiteGray{ 0.8f, 0.8f, 0.8f };
+const glm::vec3 beige{ 0.73f, 0.58f, 0.41f };
+const glm::vec3 gray{ 0.5f, 0.5f, 0.5f };
 
 spl::MuseumWalls::MuseumWalls() :
-    programId(0),
     textureId(0),
     objectModel(I),
     insideBorderModel(I),
     outsideBorderModel(I) {}
 
 spl::MuseumWalls::~MuseumWalls() {
-    glUseProgram(0);
-    if (this->programId != 0) {
-        glDeleteProgram(this->programId);
-        this->programId = 0;
-    }
     if (this->textureId != 0) {
         glDeleteTextures(1, &(this->textureId));
         this->textureId = 0;
     }
 }
 
-int loadWalls(MuseumWalls& walls, App const& app) {
-    int err = 0;
-
-    string vertShader;
-    join(app.binaryPath, PL_SHADER_VERT_ECHO, vertShader);
-
-    string fragShader;
-    join(app.binaryPath, PL_SHADER_FRAG_ECHO, fragShader);
-
-    err = loadShaders(&walls.programId, vertShader, fragShader);
-    if (err != 0) {
-        CERR_MSG(PL_ERR_LOAD_SHADERS, err, "Museum Program Error");
-        return err;
-    }
-
-    const glm::vec3 red{ 1.0f, 0.0f, 0.0f };
-    const glm::vec3 blue{ 0.0f, 0.0f, 1.0f };
-    const glm::vec3 yellow{ 1.0f, 1.0f, 0.0f };
-    const glm::vec3 ciano{ 0.0f, 1.0f, 1.0f };
-    const glm::vec3 black{ 0.0f, 0.0f, 0.0f };
-    const glm::vec3 white{ 1.0f, 1.0f, 1.0f };
-    const glm::vec3 whiteGray{ 0.8f, 0.8f, 0.8f };
-    const glm::vec3 beige{ 0.73f, 0.58f, 0.41f };
-    const glm::vec3 gray{ 0.5f, 0.5f, 0.5f };
-
+int loadWallsObject(Vao& wallsObject, Cube& cube) {
     // load cube
-    Cube cube;
     array<GLuint, 6> cubeElements;
-    err = loadCube(cube, cubeElements);
+    int err = loadCube(cube, cubeElements, true);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading cube");
         return err;
@@ -80,30 +59,65 @@ int loadWalls(MuseumWalls& walls, App const& app) {
 
     // walls object
     VAOTarget target;
-    GLsizei vertexOffset = 0;
-    OPL_ATTACH(target, cube.back, cubeElements, &vertexOffset, gray);
-    OPL_ATTACH(target, cube.right, cubeElements, &vertexOffset, gray);
-    OPL_ATTACH(target, cube.front, cubeElements, &vertexOffset, gray);
-    OPL_ATTACH(target, cube.left, cubeElements, &vertexOffset, gray);
-    OPL_ATTACH(target, cube.top, cubeElements, &vertexOffset, beige);
-    OPL_ATTACH(target, cube.botton, cubeElements, &vertexOffset, whiteGray);
-    loadVAO(walls.object, target);
+    OPL_ATTACH(target, cube.back, cubeElements, gray);
+    OPL_ATTACH(target, cube.front, cubeElements, gray);
+    OPL_ATTACH(target, cube.left, cubeElements, gray);
+    OPL_ATTACH(target, cube.right, cubeElements, gray);
+    OPL_ATTACH(target, cube.botton, cubeElements, whiteGray);
+    OPL_ATTACH(target, cube.top, cubeElements, beige);
+    loadVAO(wallsObject, target);
 
-    // walls border
-    clearVAOTarget(target, &vertexOffset);
-    array<GLuint, 8> borderElements;
-    err = loadSquareBorder(borderElements);
+    return 0;
+}
+
+int loadWallsBorder(Vao& wallsBorder, Cube const& cube) {
+    // load border positions
+    array<glm::vec3, 8> borderPositions;
+    int err = loadCube(borderPositions, false);
+    if (err != 0) {
+        CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading cube border positions");
+        return err;
+    }
+
+    // load square border
+    array<GLuint, 8> squareBorderElements;
+    err = loadSquareBorder(squareBorderElements);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading square border");
         return err;
     }
-    OPL_ATTACH(target, cube.back, borderElements, &vertexOffset, white);
-    OPL_ATTACH(target, cube.right, borderElements, &vertexOffset, white);
-    OPL_ATTACH(target, cube.front, borderElements, &vertexOffset, white);
-    OPL_ATTACH(target, cube.left, borderElements, &vertexOffset, white);
-    OPL_ATTACH(target, cube.top, borderElements, &vertexOffset, white);
-    OPL_ATTACH(target, cube.botton, borderElements, &vertexOffset, white);
-    loadVAO(walls.border, target);
+
+    // load square border glue
+    const GLsizei sidePositions = (GLsizei) cube.back.size();
+    vector<GLuint> glueSquareBorderElements;
+    UPL_JOIN_BORDERS(glueSquareBorderElements, sidePositions, squareBorderElements, squareBorderElements);
+
+    // walls border
+    VAOTarget target;
+    opl::attach(target, sidePositions, borderPositions.data()                , 8, squareBorderElements.data(), white); // back border
+    opl::attach(target, sidePositions, borderPositions.data() + sidePositions, 8, squareBorderElements.data(), white); // front border
+    target.elements.insert(target.elements.end(), glueSquareBorderElements.begin(), glueSquareBorderElements.end());   // glue border
+    loadVAO(wallsBorder, target);
+
+    return err;
+}
+
+int loadWalls(MuseumWalls& walls, App const& app) {
+    Cube cube;
+
+    int err = loadWallsObject(walls.object, cube);
+    if (err != 0) {
+        CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading walls object");
+        return err;
+    }
+
+    err = loadWallsBorder(walls.border, cube);
+    if (err != 0) {
+        CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading walls border");
+        return err;
+    }
+
+    // models
 
     const glm::vec3 scaleObject{ 9.0f, 4.0f, 16.0f };
     const glm::vec3 scaleInsideBorder = scaleObject + glm::vec3{ -0.01f };
@@ -127,45 +141,39 @@ int spl::loadMuseum(Museum& museum, App const& app) {
     return 0;
 }
 
-int drawWalls(MuseumWalls const& walls, World const& world) {
-    glUseProgram(walls.programId);
+void drawWallsObject(MuseumWalls const& walls, App const& app, World const& world) {
+    glUseProgram(app.shaders.echo);
 
+    glm::mat4 model = world.model * walls.objectModel;
+    glm::mat4 mvp = world.projection * world.view * model;
+    echo::shaderUniform(app.shaders.echo, mvp);
+
+    glBindVertexArray(walls.object.id);
+    glDrawElements(GL_TRIANGLES, walls.object.en, GL_UNSIGNED_INT, nullptr);
+}
+
+void drawWallsBorder(MuseumWalls const& walls, App const& app, World const& world, glm::mat4 const& borderModel) {
+    glUseProgram(app.shaders.echo);
+
+    glm::mat4 model = world.model * borderModel;
+    glm::mat4 mvp = world.projection * world.view * model;
+    echo::shaderUniform(app.shaders.echo, mvp);
+
+    glLineWidth(1.0f);
+    glBindVertexArray(walls.border.id);
+    glDrawElements(GL_LINES, walls.border.en, GL_UNSIGNED_INT, nullptr);
+}
+
+int drawWalls(MuseumWalls const& walls, App const& app, World const& world) {
     // setup
     // glEnable(GL_CULL_FACE);
     // glCullFace(GL_BACK);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // walls object MVP
-    glm::mat4 model = world.model * walls.objectModel;
-    glm::mat4 mvp = world.projection * world.view * model;
-    GLint MVP = glGetUniformLocation(walls.programId, "MVP");
-    glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(mvp));
-
-    // draw walls object
-    glBindVertexArray(walls.object.id);
-    glDrawElements(GL_TRIANGLES, walls.object.en, GL_UNSIGNED_INT, nullptr);
-
-    // walls inside border MVP
-    model = world.model * walls.insideBorderModel;
-    mvp = world.projection * world.view * model;
-    MVP = glGetUniformLocation(walls.programId, "MVP");
-    glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(mvp));
-
-    // draw walls inside border
-    glLineWidth(1.0f);
-    glBindVertexArray(walls.border.id);
-    glDrawElements(GL_LINES, walls.border.en, GL_UNSIGNED_INT, nullptr);
-
-    // walls outside border MVP
-    model = world.model * walls.outsideBorderModel;
-    mvp = world.projection * world.view * model;
-    MVP = glGetUniformLocation(walls.programId, "MVP");
-    glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(mvp));
-
-    // draw walls outside border
-    glLineWidth(1.0f);
-    glBindVertexArray(walls.border.id);
-    glDrawElements(GL_LINES, walls.border.en, GL_UNSIGNED_INT, nullptr);
+    // draw
+    drawWallsObject(walls, app, world);
+    drawWallsBorder(walls, app, world, walls.insideBorderModel);
+    drawWallsBorder(walls, app, world, walls.outsideBorderModel);
 
     glBindVertexArray(0);
     glUseProgram(0);
@@ -173,8 +181,8 @@ int drawWalls(MuseumWalls const& walls, World const& world) {
     return 0;
 }
 
-int spl::drawMuseum(Museum const& museum, World const& world) {
-    int err = drawWalls(museum.walls, world);
+int spl::drawMuseum(Museum const& museum, App const& app, World const& world) {
+    int err = drawWalls(museum.walls, app, world);
 
     if (err != 0) {
         CERR_MSG(PL_ERR_DRAW_OBJECT, err, "Error drawing museum walls");

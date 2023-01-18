@@ -16,7 +16,8 @@ opl::WalkCamera::WalkCamera(glm::vec3 eye, glm::vec3 direction, glm::vec3 surfac
     _surfaceNormal(glm::normalize(surfaceNormal)),
 
     _fov(glm::radians(PL_WALK_CAMERA_PERSPECTIVE_FOV)),
-    _aspect((float) PL_ENV_WINDOW_WIDTH / PL_ENV_WINDOW_HEIGHT),
+    _viewPortWidth(PL_ENV_WINDOW_WIDTH),
+    _viewPortHeight(PL_ENV_WINDOW_HEIGHT),
     _near(PL_WALK_CAMERA_PERSPECTIVE_NEAR),
     _far(PL_WALK_CAMERA_PERSPECTIVE_FAR),
 
@@ -28,7 +29,8 @@ glm::mat4 opl::WalkCamera::buildView() const {
 }
 
 glm::mat4 opl::WalkCamera::buildProjection() const {
-    return glm::perspective(_fov, _aspect, _near, _far);
+    const float aspect = (float) _viewPortWidth / _viewPortHeight;
+    return glm::perspective(_fov, aspect, _near, _far);
 }
 
 void opl::WalkCamera::moveFoward(float amount) {

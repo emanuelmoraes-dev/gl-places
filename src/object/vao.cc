@@ -20,34 +20,48 @@ void opl::loadEBO(GLuint* ebo, GLsizeiptr size, const void* elementBuffer) {
     glBindBuffer(*ebo, 0);
 }
 
-void opl::clearVAOTarget(VAOTarget& target, GLsizei* vertexOffset) {
+opl::VAOTarget::VAOTarget() : vertexOffset(0) {}
+
+void opl::clearVAOTarget(VAOTarget& target) {
     target.vertexes.clear();
     target.elements.clear();
-    *vertexOffset = 0;
+    target.vertexOffset = 0;
 }
 
 void opl::attach(
     VAOTarget& target,
-    size_t pn,
-    glm::vec3* positions,
-    size_t en,
-    GLuint* elements,
-    GLsizei* vertexOffset,
+    GLsizei pn,
+    const glm::vec3* positions,
+    GLsizei en,
+    const GLuint* elements,
     glm::vec3 color
 ) {
-    for (int i = 0; i < pn; i++) {
-        glm::vec3 position = positions[i];
+    for (GLsizei p = 0; p < pn; p++) {
+        glm::vec3 position = positions[p];
         target.vertexes.push_back(Vertex{ position, color });
     }
 
-    const GLsizei offset = *vertexOffset;
+    const GLsizei offset = target.vertexOffset;
 
-    for (int i = 0; i < en; i++) {
-        const GLsizei element = elements[i];
+    for (GLsizei e = 0; e < en; e++) {
+        const GLsizei element = elements[e];
         target.elements.push_back(offset + element);
     }
 
-    *vertexOffset += (GLsizei) pn;
+    target.vertexOffset += pn;
+}
+
+void opl::attach(std::vector<GLuint>& targetElements, GLsizei* vertexOffset, GLsizei count, GLsizei pn, GLsizei en, const GLuint* elements) {
+    for (GLsizei c = 0; c < count; c++) {
+        const GLsizei offset = *vertexOffset;
+
+        for (GLsizei e = 0; e < en; e++) {
+            const GLsizei element = elements[e];
+            targetElements.push_back(offset + element);
+        }
+
+        *vertexOffset += pn;
+    }
 }
 
 opl::Vao::~Vao() {
@@ -64,6 +78,8 @@ opl::Vao::Vao() :
     {}
 
 void opl::loadVAO(Vao& vao, GLsizei vn, GLuint vbo, GLsizei en, GLuint ebo) {
+    vao.vbo = vbo;
+    vao.ebo = ebo;
     vao.vn = vn;
     vao.en = en;
 

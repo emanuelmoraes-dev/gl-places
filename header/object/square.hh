@@ -1,5 +1,5 @@
-#ifndef _PL_SQUARE_HH_INCLUDED_
-#define _PL_SQUARE_HH_INCLUDED_
+#ifndef _PL_OBJECT_SQUARE_HH_INCLUDED_
+#define _PL_OBJECT_SQUARE_HH_INCLUDED_
 
 #include <array>
 #include <GL/glew.h>

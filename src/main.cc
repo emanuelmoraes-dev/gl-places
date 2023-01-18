@@ -60,13 +60,12 @@ void cursorPosCallback(GLFWwindow* window, double x, double y) {
 }
 
 void resized(GLFWwindow* window, int width, int height) {
-    camera._aspect = (float) width / height;
+    camera._viewPortWidth = width;
+    camera._viewPortHeight = height;
     glViewport(0, 0, (GLsizei) width, (GLsizei) height);
 }
 
 int main(int argc, const char* argv[]) {
-    const App app(argc, argv);
-
     int err = 0;
 
     err = glfwInit();
@@ -78,6 +77,7 @@ int main(int argc, const char* argv[]) {
     // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     GLFWwindow* window = glfwCreateWindow(PL_ENV_WINDOW_WIDTH, PL_ENV_WINDOW_HEIGHT, PL_ENV_WINDOW_TITLE, nullptr, nullptr);
     if (window == nullptr) {
@@ -102,6 +102,14 @@ int main(int argc, const char* argv[]) {
     }
 
     resized(window, PL_ENV_WINDOW_WIDTH, PL_ENV_WINDOW_HEIGHT);
+
+    App app;
+    err = loadApp(app, argc, argv);
+    if (err != 0) {
+        CERR(PL_ERR_LOAD_APP, err);
+        return err;
+    }
+    app.camera = &camera;
 
     World world(I);
 
@@ -129,7 +137,7 @@ int main(int argc, const char* argv[]) {
         world.view = camera.buildView();
         world.projection = camera.buildProjection();
 
-        err = drawMuseum(museum, world);
+        err = drawMuseum(museum, app, world);
         if (err != 0) {
             CERR_MSG(PL_ERR_DRAW_SCENE, err, "Museum Scene Error");
             return err;

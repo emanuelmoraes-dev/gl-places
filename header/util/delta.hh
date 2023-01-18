@@ -1,5 +1,5 @@
-#ifndef _PL_DELTA_HH_INCLUDED_
-#define _PL_DELTA_HH_INCLUDED_
+#ifndef _PL_UTIL_DELTA_HH_INCLUDED_
+#define _PL_UTIL_DELTA_HH_INCLUDED_
 
 namespace upl {
     class DeltaF {

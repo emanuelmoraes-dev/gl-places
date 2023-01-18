@@ -14,6 +14,7 @@ target_sources(
         src/util/gl_info.cc
         src/util/fs.cc
         src/util/delta.cc
+        src/util/border.cc
         src/object/shaders.cc
         src/object/vao.cc
         src/object/square.cc

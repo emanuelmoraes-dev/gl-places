@@ -1,5 +1,5 @@
-#ifndef _PL_WALK_CAMERA_HH_INCLUDED_
-#define _PL_WALK_CAMERA_HH_INCLUDED_
+#ifndef _PL_OBJECT_WALK_CAMERA_HH_INCLUDED_
+#define _PL_OBJECT_WALK_CAMERA_HH_INCLUDED_
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -12,7 +12,8 @@ namespace opl {
         glm::vec3 _surfaceNormal;
 
         float _fov;
-        float _aspect;
+        int _viewPortWidth;
+        int _viewPortHeight;
         float _near;
         float _far;
 
