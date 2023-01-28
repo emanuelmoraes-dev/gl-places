@@ -11,16 +11,16 @@
 #include <glm/ext.hpp>
 
 #define PL_SHADER_VERT_ECHO \
-UPL_JOIN(PL_ENV_SHADERS_DIR, "echo_vert.glsl")
+UPL_JOIN(PL_ENV_SHADER_DIR, "echo_vert.glsl")
 
 #define PL_SHADER_FRAG_ECHO \
-UPL_JOIN(PL_ENV_SHADERS_DIR, "echo_frag.glsl")
+UPL_JOIN(PL_ENV_SHADER_DIR, "echo_frag.glsl")
 
 #define PL_SHADER_VERT_LINE \
-UPL_JOIN(PL_ENV_SHADERS_DIR, "line_vert.glsl")
+UPL_JOIN(PL_ENV_SHADER_DIR, "line_vert.glsl")
 
 #define PL_SHADER_FRAG_LINE \
-UPL_JOIN(PL_ENV_SHADERS_DIR, "line_frag.glsl")
+UPL_JOIN(PL_ENV_SHADER_DIR, "line_frag.glsl")
 
 namespace opl {
     int loadShaders(GLuint* programId, std::string const& vertShaderFile, std::string const& fragShaderFile);

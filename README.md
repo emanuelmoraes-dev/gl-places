@@ -29,8 +29,8 @@ Copy the file "data/gl-places.example.json" to "data/gl-places.json" with the ap
 Copy the files "env/debug/env.example.hh" and "env/release/env.example.hh" to "env/debug/env.hh" and "env/release/env.hh" (respectively) with the environments configurations
 
 #### env/debug/env.hh and env/release/env.hh
-* PL_ENV_SHADERS_DIR: Relative path (from the binary folder) that has the shading source
-* PL_ENV_TEXTURES_DIR: Relative path (from the binary folder) that has the textures
+* PL_ENV_SHADER_DIR: Relative path (from the binary folder) that has the shading source
+* PL_ENV_TEXTURE_DIR: Relative path (from the binary folder) that has the textures
 * PL_ENV_DATA_DIR: Relative path (from the binary folder) that has data files
 * PL_ENV_WINDOW_WIDTH: Initial window width
 * PL_ENV_WINDOW_HEIGHT: Initial window heith
