@@ -1,1 +1,9 @@
-{}
+{
+    "scenes": {
+        "museum": {
+            "rooms": {
+                "main": []
+            }
+        }
+    }
+}
