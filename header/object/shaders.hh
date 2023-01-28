@@ -30,6 +30,7 @@ namespace opl {
         GLuint line;
 
         Shaders();
+        ~Shaders();
     };
 
     namespace echo {

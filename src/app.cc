@@ -1,25 +1,18 @@
 #include "app.hh"
 #include "errors.hh"
 #include "util/fs.hh"
+
 #include "object/shaders.hh"
+#include "object/data.hh"
+
+#include <nlohmann/json.hpp>
+#include <fstream>
 
 using namespace pl;
 using namespace upl;
 using namespace opl;
 
-pl::App::~App() {
-    glUseProgram(0);
-
-    if (this->shaders.echo != 0) {
-        glDeleteProgram(this->shaders.echo);
-        this->shaders.echo = 0;
-    }
-
-    if (this->shaders.line != 0) {
-        glDeleteProgram(this->shaders.line);
-        this->shaders.line = 0;
-    }
-}
+using json = nlohmann::json;
 
 int loadShaders(App& app) {
     std::string vertShader;
@@ -51,6 +44,13 @@ int pl::loadApp(App& app, int argc, const char* argv[]) {
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_SHADERS, err, "Error loading app shaders");
         return err;
+    }
+
+    if (std::ifstream configFile { PL_APP_CONFIG_FILE, std::ios::in }) {
+        app.config = json::parse(configFile);
+    } else {
+        CERR_MSG(PL_ERR_LOAD_CONFIG_FILE, 1, PL_APP_CONFIG_FILE);
+        return 1;
     }
 
     return 0;

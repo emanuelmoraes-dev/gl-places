@@ -1,3 +1,7 @@
+# ignore data files
+/data/**
+!/data/gl-places.example.json
+
 # Extern Libs
 /lib/glfw.zip
 /lib/glfw/

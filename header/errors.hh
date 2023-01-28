@@ -68,4 +68,7 @@
 #define PL_ERR_LOAD_APP (__PL_ERRBASE + 18)
 #define PL_ERR_LOAD_APP_MESSAGE "Error loading App"
 
+#define PL_ERR_LOAD_CONFIG_FILE (__PL_ERRBASE + 19)
+#define PL_ERR_LOAD_CONFIG_FILE_MESSAGE "Error loading config file"
+
 #endif

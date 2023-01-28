@@ -9,6 +9,20 @@ using namespace upl;
 
 opl::Shaders::Shaders() : echo(0), line(0) {}
 
+opl::Shaders::~Shaders() {
+    glUseProgram(0);
+
+    if (this->echo != 0) {
+        glDeleteProgram(this->echo);
+        this->echo = 0;
+    }
+
+    if (this->line != 0) {
+        glDeleteProgram(this->line);
+        this->line = 0;
+    }
+}
+
 int checkShader(GLuint shaderId) {
     GLint infoLogLength = 0;
     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);

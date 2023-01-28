@@ -7,6 +7,9 @@
 // Relative path (from the binary folder) that has the textures
 #define PL_ENV_TEXTURES_DIR "textures"
 
+// Relative path (from the binary folder) that has data files
+#define PL_ENV_DATA_DIR "data"
+
 // Initial window width
 #define PL_ENV_WINDOW_WIDTH 800
 

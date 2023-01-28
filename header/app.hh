@@ -5,15 +5,16 @@
 #include "object/walk_camera.hh"
 
 #include <string>
+#include <nlohmann/json.hpp>
 
 namespace pl {
 
     struct App {
         std::string binaryPath;
         opl::Shaders shaders;
-        const opl::WalkCamera* camera;
+        nlohmann::json config;
 
-        ~App();
+        const opl::WalkCamera* camera;
     };
 
     int loadApp(App& app, int argc, const char* argv[]);
