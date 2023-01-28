@@ -8,4 +8,6 @@
 #define PL_WALK_CAMERA_SPEED 8.0f
 #define PL_WALK_CAMERA_SENSITIVITY 0.05f
 
+#define PL_RESOURCE_DIR "resource"
+
 #endif

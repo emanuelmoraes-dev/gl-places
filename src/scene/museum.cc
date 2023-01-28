@@ -1,6 +1,7 @@
 #include "scene/museum.hh"
 
 #include "errors.hh"
+#include "config.hh"
 
 #include "object/shaders.hh"
 #include "object/cube.hh"
@@ -13,16 +14,22 @@
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
+
+#include <nlohmann/json.hpp>
 
 using namespace pl;
 using namespace opl;
 using namespace spl;
 using namespace upl;
 using namespace std;
+
+using json = nlohmann::json;
 
 const glm::mat4 I = glm::identity<glm::mat4>();
 const glm::vec3 red{ 1.0f, 0.0f, 0.0f };
@@ -130,11 +137,90 @@ int loadWalls(MuseumWalls& walls, App const& app) {
     return 0;
 }
 
+int loadMainRoomData(MuseumRoomData& main, App const& app) {
+    json collections = app.config
+        .value("scenes", json::object())
+        .value("museum", json::object())
+        .value("rooms", json::object())
+        .value("main", json::array());
+
+    std::string resourcePath;
+    join(PL_ENV_DATA_DIR, "resource", resourcePath);
+
+    for (json::iterator c = collections.begin(); c != collections.end(); ++c) {
+        std::string collection = (*c).get<std::string>();
+
+        std::string collectionPath;
+        join(resourcePath, collection, collectionPath);
+
+        std::string collectionConfigFile;
+        join(collectionPath, collection + ".json", collectionConfigFile);
+
+        if (std::ifstream configFile { collectionConfigFile, std::ios::in }) {
+            json imgs = json::parse(configFile)
+                .value("imgs", json::array());
+
+            int index = 0;
+            for (json::iterator it = imgs.begin(); it != imgs.end(); ++it) {
+                std::string filename = (*it).value("name", "");
+
+                if (filename.empty()) {
+                    const std::string message = collectionConfigFile + "[" + std::to_string(index) + "].name not found!";
+                    CERR_MSG(PL_ERR_LOAD_DATA_CONFIG_FILE, 2, message);
+                    return 2;
+                }
+
+                std::string imagePath;
+                join(collectionPath, filename, imagePath);
+                main.imgs.push_back(imagePath);
+                ++index;
+            }
+        } else {
+            CERR_MSG(PL_ERR_LOAD_DATA_CONFIG_FILE, 1, collectionConfigFile);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int loadRooms(MuseumRooms& rooms, App const& app) {
+    int err = loadMainRoomData(rooms.main, app);
+
+    if (err != 0) {
+        CERR_MSG(PL_ERR_LOAD_DATA, err, "Error loading museum main room data");
+        return err;
+    }
+
+    for (std::string const& img : rooms.main.imgs) {
+        std::cout << "Image: " << img << std::endl;
+    }
+
+    return 0;
+}
+
+int loadContent(MuseumContent& content, App const& app) {
+    int err = loadRooms(content.rooms, app);
+
+    if (err != 0) {
+        CERR_MSG(PL_ERR_LOAD_DATA, err, "Error loading museum rooms content");
+        return err;
+    }
+
+    return 0;
+}
+
 int spl::loadMuseum(Museum& museum, App const& app) {
     int err = loadWalls(museum.walls, app);
 
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading museum walls");
+        return err;
+    }
+
+    err = loadContent(museum.content, app);
+    if (err != 0) {
+        CERR_MSG(PL_ERR_LOAD_DATA, err, "Error loading museum content");
         return err;
     }
 

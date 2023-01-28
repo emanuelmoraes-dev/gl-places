@@ -71,4 +71,10 @@
 #define PL_ERR_LOAD_CONFIG_FILE (__PL_ERRBASE + 19)
 #define PL_ERR_LOAD_CONFIG_FILE_MESSAGE "Error loading config file"
 
+#define PL_ERR_LOAD_DATA (__PL_ERRBASE + 20)
+#define PL_ERR_LOAD_DATA_MESSAGE "Error loading user data"
+
+#define PL_ERR_LOAD_DATA_CONFIG_FILE (__PL_ERRBASE + 21)
+#define PL_ERR_LOAD_DATA_CONFIG_FILE_MESSAGE "Error loading data config file"
+
 #endif

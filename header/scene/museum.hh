@@ -5,10 +5,25 @@
 #include "world.hh"
 #include "object/vao.hh"
 
+#include <vector>
+#include <string>
+
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
 namespace spl {
+    struct MuseumRoomData {
+        std::vector<std::string> imgs;
+    };
+
+    struct MuseumRooms {
+        MuseumRoomData main;
+    };
+
+    struct MuseumContent {
+        MuseumRooms rooms;
+    };
+
     struct MuseumWalls {
         GLuint textureId;
 
@@ -25,6 +40,7 @@ namespace spl {
 
     struct Museum {
         MuseumWalls walls;
+        MuseumContent content;
     };
 
     int loadMuseum(Museum& museum, pl::App const& app);
