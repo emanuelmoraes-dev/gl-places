@@ -66,12 +66,12 @@ int loadWallsObject(Vao& wallsObject, Cube& cube) {
 
     // walls object
     VAOTarget target;
-    OPL_ATTACH(target, cube.back, cubeElements, gray);
-    OPL_ATTACH(target, cube.front, cubeElements, gray);
-    OPL_ATTACH(target, cube.left, cubeElements, gray);
-    OPL_ATTACH(target, cube.right, cubeElements, gray);
-    OPL_ATTACH(target, cube.botton, cubeElements, whiteGray);
-    // OPL_ATTACH(target, cube.top, cubeElements, beige);
+    OPL_SIDE(target, cube.back, cubeElements, gray);
+    OPL_SIDE(target, cube.front, cubeElements, gray);
+    OPL_SIDE(target, cube.left, cubeElements, gray);
+    OPL_SIDE(target, cube.right, cubeElements, gray);
+    OPL_SIDE(target, cube.botton, cubeElements, whiteGray);
+    // OPL_SIDE(target, cube.top, cubeElements, beige);
     loadVAO(wallsObject, target);
 
     return 0;
@@ -101,8 +101,9 @@ int loadWallsBorder(Vao& wallsBorder, Cube const& cube) {
 
     // walls border
     VAOTarget target;
-    opl::attach(target, sidePositions, borderPositions.data()                , 8, squareBorderElements.data(), white); // back border
-    opl::attach(target, sidePositions, borderPositions.data() + sidePositions, 8, squareBorderElements.data(), white); // front border
+    opl::vside(target.vertexes, sidePositions, borderPositions.data()                , white); // back border
+    opl::vside(target.vertexes, sidePositions, borderPositions.data() + sidePositions, white); // front border
+    OPL_ESIDE(target.elements, &(target.vertexOffset), 2, sidePositions, squareBorderElements); // back and front border
     target.elements.insert(target.elements.end(), glueSquareBorderElements.begin(), glueSquareBorderElements.end());   // glue border
     loadVAO(wallsBorder, target);
 

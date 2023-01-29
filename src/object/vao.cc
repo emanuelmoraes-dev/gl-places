@@ -28,30 +28,14 @@ void opl::clearVAOTarget(VAOTarget& target) {
     target.vertexOffset = 0;
 }
 
-void opl::attach(
-    VAOTarget& target,
-    GLsizei pn,
-    const glm::vec3* positions,
-    GLsizei en,
-    const GLuint* elements,
-    glm::vec3 color
-) {
+void opl::vside(std::vector<Vertex>& vertexes, GLsizei pn, const glm::vec3* positions, glm::vec3 color) {
     for (GLsizei p = 0; p < pn; p++) {
         glm::vec3 position = positions[p];
-        target.vertexes.push_back(Vertex{ position, color });
+        vertexes.push_back(Vertex{ position, color });
     }
-
-    const GLsizei offset = target.vertexOffset;
-
-    for (GLsizei e = 0; e < en; e++) {
-        const GLsizei element = elements[e];
-        target.elements.push_back(offset + element);
-    }
-
-    target.vertexOffset += pn;
 }
 
-void opl::attach(std::vector<GLuint>& targetElements, GLsizei* vertexOffset, GLsizei count, GLsizei pn, GLsizei en, const GLuint* elements) {
+void opl::eside(std::vector<GLuint>& targetElements, GLsizei* vertexOffset, GLsizei count, GLsizei pn, GLsizei en, const GLuint* elements) {
     for (GLsizei c = 0; c < count; c++) {
         const GLsizei offset = *vertexOffset;
 
@@ -60,8 +44,13 @@ void opl::attach(std::vector<GLuint>& targetElements, GLsizei* vertexOffset, GLs
             targetElements.push_back(offset + element);
         }
 
-        *vertexOffset += pn;
+        *vertexOffset = (*vertexOffset) + pn;
     }
+}
+
+void opl::side(VAOTarget& target, GLsizei pn, const glm::vec3* positions, GLsizei en, const GLuint* elements, glm::vec3 color) {
+    vside(target.vertexes, pn, positions, color);
+    eside(target.elements, &(target.vertexOffset), 1, pn, en, elements);
 }
 
 opl::Vao::~Vao() {

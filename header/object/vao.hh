@@ -7,11 +7,14 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-#define OPL_ATTACH(target, positions, elements, color) \
-opl::attach(target, (GLsizei) positions.size(), positions.data(), (GLsizei) elements.size(), elements.data(), color)
+#define OPL_VSIDE(vertexes, positions, color) \
+opl::vside(vertexes, (GLsizei) positions.size(), positions.data(), color)
 
-#define OPL_ATTACH_ELEMENTS(targetElements, vertexOffset, count, pn, elements) \
-opl::attach(targetElements, vertexOffset, count, pn, (GLsizei) elements.size(), elements.data())
+#define OPL_ESIDE(targetElements, vertexOffset, count, pn, elements) \
+opl::eside(targetElements, vertexOffset, count, pn, (GLsizei) elements.size(), elements.data())
+
+#define OPL_SIDE(target, positions, elements, color) \
+opl::side(target, (GLsizei) positions.size(), positions.data(), (GLsizei) elements.size(), elements.data(), color)
 
 namespace opl {
     void loadVBO(GLuint* vbo, GLsizeiptr size, const void* vertexBuffer);
@@ -32,16 +35,11 @@ namespace opl {
 
     void clearVAOTarget(VAOTarget& target);
 
-    void attach(
-        VAOTarget& target,
-        GLsizei pn,
-        const glm::vec3* positions,
-        GLsizei en,
-        const GLuint* elements,
-        glm::vec3 color
-    );
+    void vside(std::vector<Vertex>& vertexes, GLsizei pn, const glm::vec3* positions, glm::vec3 color);
 
-    void attach(std::vector<GLuint>& targetElements, GLsizei* vertexOffset, GLsizei count, GLsizei pn, GLsizei en, const GLuint* elements);
+    void eside(std::vector<GLuint>& targetElements, GLsizei* vertexOffset, GLsizei count, GLsizei pn, GLsizei en, const GLuint* elements);
+
+    void side(VAOTarget& target, GLsizei pn, const glm::vec3* positions, GLsizei en, const GLuint* elements, glm::vec3 color);
 
     struct Vao {
         GLuint id;
