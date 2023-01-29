@@ -1,4 +1,5 @@
 #include "object/vao.hh"
+#include "util/cond.hh"
 
 using namespace opl;
 
@@ -20,6 +21,16 @@ void opl::loadEBO(GLuint* ebo, GLsizeiptr size, const void* elementBuffer) {
     glBindBuffer(*ebo, 0);
 }
 
+opl::Vertex::Vertex(glm::vec3 position, glm::vec3 color):
+    position(position),
+    color(color),
+    uv(glm::vec2{ 0.0f, 0.0f }) {}
+
+opl::Vertex::Vertex(glm::vec3 position, glm::vec3 color, glm::vec2 uv):
+    position(position),
+    color(color),
+    uv(uv) {}
+
 opl::VAOTarget::VAOTarget() : vertexOffset(0) {}
 
 void opl::clearVAOTarget(VAOTarget& target) {
@@ -28,10 +39,16 @@ void opl::clearVAOTarget(VAOTarget& target) {
     target.vertexOffset = 0;
 }
 
-void opl::vside(std::vector<Vertex>& vertexes, GLsizei pn, const glm::vec3* positions, glm::vec3 color) {
+void opl::vside(std::vector<Vertex>& vertexes, GLsizei pn, const glm::vec3* positions, glm::vec3 color, glm::vec2* uvs) {
     for (GLsizei p = 0; p < pn; p++) {
+        const glm::vec2* uv = UPL_NULLABLE(uvs, uvs + p);
         glm::vec3 position = positions[p];
-        vertexes.push_back(Vertex{ position, color });
+
+        if (uv != nullptr) {
+            vertexes.push_back(Vertex{ position, color, *uv });
+        } else {
+            vertexes.push_back(Vertex{ position, color });
+        }
     }
 }
 
@@ -48,8 +65,8 @@ void opl::eside(std::vector<GLuint>& targetElements, GLsizei* vertexOffset, GLsi
     }
 }
 
-void opl::side(VAOTarget& target, GLsizei pn, const glm::vec3* positions, GLsizei en, const GLuint* elements, glm::vec3 color) {
-    vside(target.vertexes, pn, positions, color);
+void opl::side(VAOTarget& target, GLsizei pn, const glm::vec3* positions, GLsizei en, const GLuint* elements, glm::vec3 color, glm::vec2* uvs) {
+    vside(target.vertexes, pn, positions, color, uvs);
     eside(target.elements, &(target.vertexOffset), 1, pn, en, elements);
 }
 

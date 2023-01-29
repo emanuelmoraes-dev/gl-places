@@ -58,7 +58,8 @@ spl::MuseumWalls::~MuseumWalls() {
 int loadWallsObject(Vao& wallsObject, Cube& cube) {
     // load cube
     array<GLuint, 6> cubeElements;
-    int err = loadCube(cube, cubeElements, true);
+    array<glm::vec2, 4> uvs;
+    int err = loadCube(cube, cubeElements, uvs, true);
     if (err != 0) {
         CERR_MSG(PL_ERR_LOAD_OBJECT, err, "Error loading cube");
         return err;
@@ -66,12 +67,12 @@ int loadWallsObject(Vao& wallsObject, Cube& cube) {
 
     // walls object
     VAOTarget target;
-    OPL_SIDE(target, cube.back, cubeElements, gray);
-    OPL_SIDE(target, cube.front, cubeElements, gray);
-    OPL_SIDE(target, cube.left, cubeElements, gray);
-    OPL_SIDE(target, cube.right, cubeElements, gray);
-    OPL_SIDE(target, cube.botton, cubeElements, whiteGray);
-    // OPL_SIDE(target, cube.top, cubeElements, beige);
+    OPL_SIDE(target, cube.back, cubeElements, gray, uvs.data());
+    OPL_SIDE(target, cube.front, cubeElements, gray, uvs.data());
+    OPL_SIDE(target, cube.left, cubeElements, gray, uvs.data());
+    OPL_SIDE(target, cube.right, cubeElements, gray, uvs.data());
+    OPL_SIDE(target, cube.botton, cubeElements, whiteGray, uvs.data());
+    // OPL_SIDE(target, cube.top, cubeElements, beige, uvs.data());
     loadVAO(wallsObject, target);
 
     return 0;
@@ -101,8 +102,8 @@ int loadWallsBorder(Vao& wallsBorder, Cube const& cube) {
 
     // walls border
     VAOTarget target;
-    opl::vside(target.vertexes, sidePositions, borderPositions.data()                , white); // back border
-    opl::vside(target.vertexes, sidePositions, borderPositions.data() + sidePositions, white); // front border
+    opl::vside(target.vertexes, sidePositions, borderPositions.data()                , white, nullptr); // back border
+    opl::vside(target.vertexes, sidePositions, borderPositions.data() + sidePositions, white, nullptr); // front border
     OPL_ESIDE(target.elements, &(target.vertexOffset), 2, sidePositions, squareBorderElements); // back and front border
     target.elements.insert(target.elements.end(), glueSquareBorderElements.begin(), glueSquareBorderElements.end());   // glue border
     loadVAO(wallsBorder, target);

@@ -167,6 +167,20 @@ int opl::loadCube(Cube& cube, array<GLuint, 6>& elements, bool rotateEnabled) {
     return 0;
 }
 
+int opl::loadCube(Cube& cube, std::array<GLuint, 6>& elements, std::array<glm::vec2, 4>& uvs, bool rotateEnabled) {
+    int err = loadCube(cube, elements, rotateEnabled);
+    if (err != 0) {
+        return err;
+    }
+
+    err = loadSquareUV(uvs);
+    if (err != 0) {
+        return err;
+    }
+
+    return 0;
+}
+
 int opl::loadCube(array<glm::vec3, 8>& positions, bool rotateEnabled) {
     constexpr float translate = 1;
 

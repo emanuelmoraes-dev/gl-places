@@ -9,7 +9,9 @@
 namespace opl {
     int loadSquare(std::array<glm::vec3, 4>& positions);
     int loadSquare(std::array<GLuint, 6>& elements);
+    int loadSquareUV(std::array<glm::vec2, 4> uvs);
     int loadSquare(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6>& elements);
+    int loadSquare(std::array<glm::vec3, 4>& positions, std::array<GLuint, 6>& elements, std::array<glm::vec2, 4> uvs);
     int loadSquareBorder(std::array<GLuint, 8>& elements);
 }
 

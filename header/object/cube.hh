@@ -23,6 +23,7 @@ namespace opl {
 
     int loadCube(Cube& cube, bool rotateEnabled);
     int loadCube(Cube& cube, std::array<GLuint, 6>& elements, bool rotateEnabled);
+    int loadCube(Cube& cube, std::array<GLuint, 6>& elements, std::array<glm::vec2, 4>& uvs, bool rotateEnabled);
     int loadCube(std::array<glm::vec3, 8>& positions, bool rotateEnabled);
 }
 
